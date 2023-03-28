@@ -57,10 +57,7 @@ BOOL   packetReplaceIp(NSMutableData * _Nonnull data, NSString * _Nonnull source
     }
     [data getBytes:&sourcePacketIp range:NSMakeRange(12, 4)];
     [data getBytes:&destPacketIp range:NSMakeRange(16, 4)];
-    if (sourceSearchIp.s_addr != sourcePacketIp.s_addr && destSearchIp.s_addr != destPacketIp.s_addr) {
-        return false;
-    }
-    if (sourceSearchIp.s_addr != destPacketIp.s_addr && destSearchIp.s_addr != sourcePacketIp.s_addr) {
+    if (sourceSearchIp.s_addr != sourcePacketIp.s_addr || destSearchIp.s_addr != destPacketIp.s_addr) {
         return false;
     }
 //    NSMutableData *copy = [data mutableCopy];
