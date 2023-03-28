@@ -40,7 +40,7 @@ NSData * _Nonnull addressIPv4StringToData(NSString * _Nonnull ascii) {
     return [NSData dataWithBytes:&addr length:sizeof(addr)];
 }
 
-NSData * _Nonnull packetReplaceIp(NSMutableData * _Nonnull data, NSString * _Nonnull sourceSearch, NSString * _Nonnull sourceReplace, NSString * _Nonnull destSearch, NSString * _Nonnull destReplace) {
+BOOL   packetReplaceIp(NSMutableData * _Nonnull data, NSString * _Nonnull sourceSearch, NSString * _Nonnull sourceReplace, NSString * _Nonnull destSearch, NSString * _Nonnull destReplace) {
     struct in_addr sourceSearchIp = {0};
     struct in_addr sourceReplaceIp = {0};
     struct in_addr sourcePacketIp = {0};
@@ -53,12 +53,12 @@ NSData * _Nonnull packetReplaceIp(NSMutableData * _Nonnull data, NSString * _Non
     inet_aton(destSearch.UTF8String, &destSearchIp);
     inet_aton(destReplace.UTF8String, &destReplaceIp);
     if (data.length < 20) {
-        return data;
+        return false;
     }
     [data getBytes:&sourcePacketIp range:NSMakeRange(12, 4)];
     [data getBytes:&destPacketIp range:NSMakeRange(16, 4)];
     if (sourceSearchIp.s_addr != sourcePacketIp.s_addr && destSearchIp.s_addr != destPacketIp.s_addr) {
-        return data;
+        return false;
     }
 //    NSMutableData *copy = [data mutableCopy];
     if (sourceSearchIp.s_addr == sourcePacketIp.s_addr) {
@@ -67,5 +67,5 @@ NSData * _Nonnull packetReplaceIp(NSMutableData * _Nonnull data, NSString * _Non
     if (destSearchIp.s_addr == destPacketIp.s_addr) {
         [data replaceBytesInRange:NSMakeRange(16, 4) withBytes:&destReplaceIp];
     }
-    return data;
+    return true;
 }

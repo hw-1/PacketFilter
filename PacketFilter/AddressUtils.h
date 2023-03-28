@@ -21,6 +21,6 @@
 
 BOOL addressIsLoopback(NSData * _Nonnull data);
 NSData * _Nonnull addressIPv4StringToData(NSString * _Nonnull ascii);
-NSData * _Nonnull packetReplaceIp(NSMutableData * _Nonnull data, NSString * _Nonnull sourceSearch, NSString * _Nonnull sourceReplace, NSString * _Nonnull destSearch, NSString * _Nonnull destReplace);
+BOOL   packetReplaceIp(NSMutableData * _Nonnull data, NSString * _Nonnull sourceSearch, NSString * _Nonnull sourceReplace, NSString * _Nonnull destSearch, NSString * _Nonnull destReplace);
 
 #endif /* AddressUtils_h */
